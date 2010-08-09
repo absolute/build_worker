@@ -1,0 +1,8 @@
+sudo gem install cucumber
+sudo gem install cucumber-rails
+sudo gem install rspec
+sudo gem install rspec rails
+script/generate rspec #bootstrap will create the necessary folders 
+script/generate cucumber :bootstrap will create the necessary folders         
+script/generate feature post
+script/generate rspec_model user
