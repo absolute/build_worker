@@ -143,3 +143,255 @@ Processing BuildController#create (for 0.0.0.0 at 2010-08-09 16:49:54) [POST]
   Parameters: {"project"=>{"id"=>1}}
 Rendering build/create
 Completed in 10ms (View: 1, DB: 0) | 200 OK [http://test.host/build/create?project%5Bid%5D=1]
+
+
+Processing BuildController#create (for 0.0.0.0 at 2010-08-10 11:13:49) [POST]
+  Parameters: {"project"=>{"id"=>1}}
+Rendering build/create
+Completed in 10ms (View: 1, DB: 0) | 200 OK [http://test.host/build/create?project%5Bid%5D=1]
+
+
+Processing BuildController#create (for 0.0.0.0 at 2010-08-10 12:36:00) [POST]
+  Parameters: {"project"=>{"id"=>1}}
+Rendering build/create
+Completed in 10ms (View: 1, DB: 0) | 200 OK [http://test.host/build/create?project%5Bid%5D=1]
+
+
+Processing BuildController#create (for 0.0.0.0 at 2010-08-10 13:25:07) [POST]
+  Parameters: {"project"=>{"id"=>1}}
+Rendering build/create
+Completed in 10ms (View: 1, DB: 0) | 200 OK [http://test.host/build/create?project%5Bid%5D=1]
+
+
+Processing BuildController#create (for 0.0.0.0 at 2010-08-10 13:26:33) [POST]
+  Parameters: {"project"=>{"id"=>1}}
+Rendering build/create
+Completed in 10ms (View: 1, DB: 0) | 200 OK [http://test.host/build/create?project%5Bid%5D=1]
+
+
+Processing BuildController#create (for 0.0.0.0 at 2010-08-10 13:27:01) [POST]
+  Parameters: {"project"=>{"id"=>1}}
+Rendering build/create
+Completed in 10ms (View: 1, DB: 0) | 200 OK [http://test.host/build/create?project%5Bid%5D=1]
+
+
+Processing BuildController#create (for 0.0.0.0 at 2010-08-10 13:30:11) [POST]
+  Parameters: {"project"=>{"id"=>1}}
+Rendering build/create
+Completed in 10ms (View: 1, DB: 0) | 200 OK [http://test.host/build/create?project%5Bid%5D=1]
+
+
+Processing BuildController#create (for 0.0.0.0 at 2010-08-10 13:31:30) [POST]
+  Parameters: {"project"=>{"id"=>1}}
+Rendering build/create
+Completed in 10ms (View: 1, DB: 0) | 200 OK [http://test.host/build/create?project%5Bid%5D=1]
+
+
+Processing BuildController#create (for 0.0.0.0 at 2010-08-10 13:33:10) [POST]
+  Parameters: {"project"=>{"id"=>1}}
+Rendering build/create
+Completed in 10ms (View: 1, DB: 0) | 200 OK [http://test.host/build/create?project%5Bid%5D=1]
+
+
+Processing BuildController#create (for 0.0.0.0 at 2010-08-10 13:35:21) [POST]
+  Parameters: {"project"=>{"id"=>1}}
+Rendering build/create
+Completed in 10ms (View: 1, DB: 0) | 200 OK [http://test.host/build/create?project%5Bid%5D=1]
+
+
+Processing BuildController#create (for 0.0.0.0 at 2010-08-10 13:36:01) [POST]
+  Parameters: {"project"=>{"id"=>1}}
+Rendering build/create
+Completed in 10ms (View: 1, DB: 0) | 200 OK [http://test.host/build/create?project%5Bid%5D=1]
+
+
+Processing BuildController#create (for 0.0.0.0 at 2010-08-10 13:40:31) [POST]
+  Parameters: {"project"=>{"id"=>1}}
+Rendering build/create
+Completed in 10ms (View: 1, DB: 0) | 200 OK [http://test.host/build/create?project%5Bid%5D=1]
+
+
+Processing BuildController#create (for 0.0.0.0 at 2010-08-10 13:43:56) [POST]
+  Parameters: {"project"=>{"id"=>1}}
+Rendering build/create
+Completed in 10ms (View: 1, DB: 0) | 200 OK [http://test.host/build/create?project%5Bid%5D=1]
+
+
+Processing BuildController#create (for 0.0.0.0 at 2010-08-10 13:44:27) [POST]
+  Parameters: {"project"=>{"id"=>1}}
+Rendering build/create
+Completed in 10ms (View: 1, DB: 0) | 200 OK [http://test.host/build/create?project%5Bid%5D=1]
+
+
+Processing BuildController#create (for 0.0.0.0 at 2010-08-10 13:46:50) [POST]
+  Parameters: {"project"=>{"id"=>1}}
+Rendering build/create
+Completed in 10ms (View: 1, DB: 0) | 200 OK [http://test.host/build/create?project%5Bid%5D=1]
+
+
+Processing BuildController#create (for 0.0.0.0 at 2010-08-10 13:47:10) [POST]
+  Parameters: {"project"=>{"id"=>1}}
+Rendering build/create
+Completed in 10ms (View: 1, DB: 0) | 200 OK [http://test.host/build/create?project%5Bid%5D=1]
+
+
+Processing BuildController#create (for 0.0.0.0 at 2010-08-10 13:54:13) [POST]
+  Parameters: {"project"=>{"id"=>1}}
+Rendering build/create
+Completed in 10ms (View: 1, DB: 0) | 200 OK [http://test.host/build/create?project%5Bid%5D=1]
+
+
+Processing BuildController#create (for 0.0.0.0 at 2010-08-10 14:01:46) [POST]
+  Parameters: {"project"=>{"id"=>1}}
+Rendering build/create
+Completed in 10ms (View: 1, DB: 0) | 200 OK [http://test.host/build/create?project%5Bid%5D=1]
+
+
+Processing BuildController#create (for 0.0.0.0 at 2010-08-10 14:02:38) [POST]
+  Parameters: {"project"=>{"id"=>1}}
+Rendering build/create
+Completed in 11ms (View: 1, DB: 0) | 200 OK [http://test.host/build/create?project%5Bid%5D=1]
+
+
+Processing BuildController#create (for 0.0.0.0 at 2010-08-10 14:09:41) [POST]
+  Parameters: {"project"=>{"id"=>1}}
+Rendering build/create
+Completed in 10ms (View: 1, DB: 0) | 200 OK [http://test.host/build/create?project%5Bid%5D=1]
+
+
+Processing BuildController#create (for 0.0.0.0 at 2010-08-10 14:14:58) [POST]
+  Parameters: {"project"=>{"id"=>1}}
+Rendering build/create
+Completed in 10ms (View: 1, DB: 0) | 200 OK [http://test.host/build/create?project%5Bid%5D=1]
+
+
+Processing BuildController#create (for 0.0.0.0 at 2010-08-10 14:22:22) [POST]
+  Parameters: {"project"=>{"id"=>1}}
+Rendering build/create
+Completed in 10ms (View: 1, DB: 0) | 200 OK [http://test.host/build/create?project%5Bid%5D=1]
+
+
+Processing BuildController#create (for 0.0.0.0 at 2010-08-10 14:22:54) [POST]
+  Parameters: {"project"=>{"id"=>1}}
+Rendering build/create
+Completed in 10ms (View: 1, DB: 0) | 200 OK [http://test.host/build/create?project%5Bid%5D=1]
+
+
+Processing BuildController#create (for 0.0.0.0 at 2010-08-10 14:28:29) [POST]
+  Parameters: {"project"=>{"id"=>1}}
+Rendering build/create
+Completed in 10ms (View: 1, DB: 0) | 200 OK [http://test.host/build/create?project%5Bid%5D=1]
+
+
+Processing BuildController#create (for 0.0.0.0 at 2010-08-10 14:29:06) [POST]
+  Parameters: {"project"=>{"id"=>1}}
+Rendering build/create
+Completed in 10ms (View: 1, DB: 0) | 200 OK [http://test.host/build/create?project%5Bid%5D=1]
+
+
+Processing BuildController#create (for 0.0.0.0 at 2010-08-10 14:29:34) [POST]
+  Parameters: {"project"=>{"id"=>1}}
+Rendering build/create
+Completed in 10ms (View: 1, DB: 0) | 200 OK [http://test.host/build/create?project%5Bid%5D=1]
+
+
+Processing BuildController#create (for 0.0.0.0 at 2010-08-10 14:33:55) [POST]
+  Parameters: {"project"=>{"id"=>1}}
+Rendering build/create
+Completed in 10ms (View: 1, DB: 0) | 200 OK [http://test.host/build/create?project%5Bid%5D=1]
+
+
+Processing BuildController#create (for 0.0.0.0 at 2010-08-10 14:37:29) [POST]
+  Parameters: {"project"=>{"id"=>1}}
+Rendering build/create
+Completed in 10ms (View: 1, DB: 0) | 200 OK [http://test.host/build/create?project%5Bid%5D=1]
+
+
+Processing BuildController#create (for 0.0.0.0 at 2010-08-10 14:38:54) [POST]
+  Parameters: {"project"=>{"id"=>1}}
+Rendering build/create
+Completed in 10ms (View: 1, DB: 0) | 200 OK [http://test.host/build/create?project%5Bid%5D=1]
+
+
+Processing BuildController#create (for 0.0.0.0 at 2010-08-10 14:40:46) [POST]
+  Parameters: {"project"=>{"id"=>1}}
+Rendering build/create
+Completed in 10ms (View: 1, DB: 0) | 200 OK [http://test.host/build/create?project%5Bid%5D=1]
+
+
+Processing BuildController#create (for 0.0.0.0 at 2010-08-10 14:41:26) [POST]
+  Parameters: {"project"=>{"id"=>1}}
+Rendering build/create
+Completed in 10ms (View: 1, DB: 0) | 200 OK [http://test.host/build/create?project%5Bid%5D=1]
+
+
+Processing BuildController#create (for 0.0.0.0 at 2010-08-10 14:42:26) [POST]
+  Parameters: {"project"=>{"id"=>1}}
+Rendering build/create
+Completed in 10ms (View: 1, DB: 0) | 200 OK [http://test.host/build/create?project%5Bid%5D=1]
+
+
+Processing BuildController#create (for 0.0.0.0 at 2010-08-10 14:44:10) [POST]
+  Parameters: {"project"=>{"id"=>1}}
+Rendering build/create
+Completed in 10ms (View: 1, DB: 0) | 200 OK [http://test.host/build/create?project%5Bid%5D=1]
+
+
+Processing BuildController#create (for 0.0.0.0 at 2010-08-10 14:51:24) [POST]
+  Parameters: {"project"=>{"id"=>1}}
+Rendering build/create
+Completed in 10ms (View: 1, DB: 0) | 200 OK [http://test.host/build/create?project%5Bid%5D=1]
+
+
+Processing BuildController#create (for 0.0.0.0 at 2010-08-10 14:52:20) [POST]
+  Parameters: {"project"=>{"id"=>1}}
+Rendering build/create
+Completed in 10ms (View: 1, DB: 0) | 200 OK [http://test.host/build/create?project%5Bid%5D=1]
+
+
+Processing BuildController#create (for 0.0.0.0 at 2010-08-10 14:55:20) [POST]
+  Parameters: {"project"=>{"id"=>1}}
+Rendering build/create
+Completed in 10ms (View: 1, DB: 0) | 200 OK [http://test.host/build/create?project%5Bid%5D=1]
+
+
+Processing BuildController#create (for 0.0.0.0 at 2010-08-10 14:57:06) [POST]
+  Parameters: {"project"=>{"id"=>1}}
+Rendering build/create
+Completed in 10ms (View: 1, DB: 0) | 200 OK [http://test.host/build/create?project%5Bid%5D=1]
+
+
+Processing BuildController#create (for 0.0.0.0 at 2010-08-10 14:58:24) [POST]
+  Parameters: {"project"=>{"id"=>1}}
+Rendering build/create
+Completed in 11ms (View: 1, DB: 0) | 200 OK [http://test.host/build/create?project%5Bid%5D=1]
+
+
+Processing BuildController#create (for 0.0.0.0 at 2010-08-10 14:58:38) [POST]
+  Parameters: {"project"=>{"id"=>1}}
+Rendering build/create
+Completed in 10ms (View: 1, DB: 0) | 200 OK [http://test.host/build/create?project%5Bid%5D=1]
+
+
+Processing BuildController#create (for 0.0.0.0 at 2010-08-10 15:00:55) [POST]
+  Parameters: {"project"=>{"id"=>1}}
+Rendering build/create
+Completed in 11ms (View: 1, DB: 0) | 200 OK [http://test.host/build/create?project%5Bid%5D=1]
+
+
+Processing BuildController#create (for 0.0.0.0 at 2010-08-10 15:03:05) [POST]
+  Parameters: {"project"=>{"id"=>1}}
+Rendering build/create
+Completed in 10ms (View: 1, DB: 0) | 200 OK [http://test.host/build/create?project%5Bid%5D=1]
+
+
+Processing BuildController#create (for 0.0.0.0 at 2010-08-10 15:03:47) [POST]
+  Parameters: {"project"=>{"id"=>1}}
+Rendering build/create
+Completed in 10ms (View: 1, DB: 0) | 200 OK [http://test.host/build/create?project%5Bid%5D=1]
+
+
+Processing BuildController#create (for 0.0.0.0 at 2010-08-10 15:04:39) [POST]
+  Parameters: {"project"=>{"id"=>1}}
+Rendering build/create
+Completed in 11ms (View: 1, DB: 0) | 200 OK [http://test.host/build/create?project%5Bid%5D=1]

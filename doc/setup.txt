@@ -5,4 +5,78 @@ sudo gem install rspec rails
 script/generate rspec #bootstrap will create the necessary folders 
 script/generate cucumber :bootstrap will create the necessary folders         
 script/generate feature post
-script/generate rspec_model user
+script/generate rspec_model user          
+
+#RSPEC QUICK REFERENCE
+
+#Methods available in the integration testing
+delete
+delete_via_redirect
+follow_redirect!
+get
+get_via_redirect
+head
+host!
+https!
+https?
+new
+post
+post_via_redirect
+put
+put_via_redirect
+redirect?
+request_via_redirect
+reset!
+url_for
+xhr
+xml_http_request
+
+#Attributes available in integration testing
+[RW]accept:	 The Accept header to send.
+[RW]application:	 Rack application to use
+[R]body:	 The body of the last request.
+[R]controller:	 A reference to the controller instance used by the last request.
+[R]cookies:	 A map of the cookies returned by the last response, and which will be sent with the next request.
+[R]headers:	 A map of the headers returned by the last response.
+[RW]host:	 The hostname used in the last request.
+[R]path:	 The URI of the last request.
+[RW]remote_addr:	 The remote_addr used in the last request.
+[R]request:	 A reference to the request instance used by the last request.
+[RW]request_count:	 A running counter of the number of requests processed.
+[R]response:	 A reference to the response instance used by the last request.
+[R]status:	 The integer HTTP status code of the last request.
+[R]status_message:	 The status message that accompanied the status code of the last request.
+
+#Rspec built-in matchers
+cow.should == twin_cow
+cow.should === twin_cow
+cow.should eql(cow)
+cow.should equal(cow)
+result.should be_close(3.14, 0.005)
+result.should match(/this regexp/)
+result.should =~ /this regexp/   
+lambda {
+User.create!(:role => "admin" )
+}.should change{ User.admins.count }
+lambda {
+field.remove(:players, 25)
+}.should raise_error(NotEnoughPlayers,“attempted to remove more players than there is on field”)
+ lambda {
+speech.register Person.new
+}.should throw_symbol(:speech_full, 100)      
+a_string.should be_empty #When using a be_something matcher, RSpec removes the “be_”, appends a “?” and calls the resulting method in the receiver a_string.empty?
+request_parameters.should have_key(:id) #RSpec uses method_missing to convert anything that begins with have_something to has_something? and performs the checking. request_parameters.has_key(:id)
+home_team.should have(9).players_on(field) #As have() does not respond to players_on(), it delegates to the receiver (home_team). It encourages the home_team object to have useful methods like players_on.
+a_collection.should have(10).items #items is just providing some meaning to the expectation
+“lucas”.should have(5).characters  #Strings are not collections by definition but they respond to a lot of methods that collections do, like length() and size(). This allow us to use have() to expect a string of a specific length.
+work.should have_exactly(8).hours
+basket.should have_at_least(5).items
+auditorium.should have_at_most(100).people
+number.should be >= 2
+number.should be <= 4
+
+
+
+
+
+

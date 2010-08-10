@@ -3,6 +3,8 @@
 Build Worker is a web-application framework that serves as a build worker for 
 Pureapp continuous integration server. 
 
-Build Worker communicates with purapp server using REST. 
+Build Worker communicates with purapp server using REST.  
+
+$spec spec -f specdoc -c #run rspec specifications from project root
 
 Please check back shortly for more documentation.
