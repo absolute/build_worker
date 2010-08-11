@@ -1,0 +1,36 @@
+~/.rake/*.rake #Any rake command with the -g option will use these global Rake files 
+rake -g -T
+task :name_of_task do   #no prerequisites (rake name_of_test)
+task :third_task => ["first_task", "second_task"] do #with prerequisites (rake third_task)
+task :my_task, [:first_arg, :second_arg] => ["first_task", "second_task"] do |t, args|  #with arguments (rake my_task[0,1])
+args.with_defaults(:first_arg => "Foo", :last_arg => "Bar") #assigns default values to arguments
+task :default => ["my_task"] #setting a default task (rake)
+Rake::Task[:second_task].invoke #running one task within another
+file 'mydoc.pdf' => ['mydoc.xml', 'mydoc.xslt'] do #file task - Rake checks both that the file exists, and also that it is not older than the files specified by any prerequisite tasks. Rake only runs the task associated with the file if the target is either not present, or if it is not up to dat
+directory 'html' #directory task 
+my_files = FileList['build/*.html', 'index.xml']  #FileList is an array of complete and partial file names
+require 'rake/clean'; CLEAN.include('*.tmp') #CLEAN FileList will be deleted when you run the clean task
+CLOBBER.include('*.tmp', 'build/*') #clobber deletes anything included in the CLOBBER list
+cp('readme.htm', File.join('build', 'readme.htm'), :verbose => true) #File Handling Methods 
+mv(File.join('build', 'readme.htm'), File.join('release', 'index.htm'), :verbose => true)
+safe_ln #create ln else cp if ln fails
+#RUN THE COMMAND USING SH  
+require 'fileutils' #sh commands need this
+sh %{ls -ltr} #
+sh 'ls', 'file with spaces'
+# check exit status after command runs
+sh %{grep pattern file} do |ok, res|
+	if ! ok
+		puts "pattern not found (status = #{res.exitstatus})"
+	end
+end     
+my_setting1 = ENV['HOME'] #uses environment variable 'HOME'
+namespace 'build' do #Use Namespaces to Organize Tasks   (rake build:task)
+config = get_config(f) #loads yml file useful for creating dynamic tasks
+rake --rakefile my_task_file my_task #use a specific Rake file of your choice, use either -f, or --rakefile
+rake -g -T #use tasks from the Rake files from your .rake directory, use the -g option
+rake --silent my_task #-quiet option only suppresses normal output. Use --silent to run Rake with absolutely no output at all
+rake my_task my_var1='Some value' my_var2='Another value' #setting environment variables
+rake --trace my_task #detailed output
+
+       
