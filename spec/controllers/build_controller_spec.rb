@@ -2,20 +2,38 @@ require 'spec_helper'
 
 describe BuildController do
                      
-context "new build with valid project details" do
-  it "should create a build" do       
+context "build with valid project" do
+  it "should be successful" do       
     post :create, :project=>{:id=>1}
-    controller.should be_an_instance_of(BuildController)
+    @response.should be_success
   end                                                   
-  it "should return build details"
+  it "should return 'building' status" do
+    post :create, :project=>{:id=>1}      
+    @response.should have_tag("status", :text => "building")
+  end
+  it "should return build id" do
+    post :create, :project=>{:id=>1}      
+    @response.should have_tag("build-id", :text => "1")
+  end
+  it "should return reports url" do
+    post :create, :project=>{:id=>1}      
+    @response.should have_tag("reports-url", :text => "http://aws.amazon.com/1/reports")
+  end
 end                              
 
-context "new build with invalid project details" do
+context "build with invalid project" do
   it "should return error details"
 end
                                  
-context "check build status" do
-  it "should return build status"
+context "check build status with valid project" do
+  it "should return build status" do
+    post :status, :project=>{:id=>1}
+    @response.should have_tag("status", :text => "building")
+  end
+end                             
+
+context "check build status with invalid project" do
+  it "should return error details"
 end                             
 
 context "delete running build" do

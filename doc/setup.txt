@@ -9,7 +9,7 @@ script/generate rspec_model user
 
 #RSPEC QUICK REFERENCE
 
-#Methods available in the integration testing
+#METHODS AVAILABLE IN THE INTEGRATION TESTING
 delete
 delete_via_redirect
 follow_redirect!
@@ -31,7 +31,7 @@ url_for
 xhr
 xml_http_request
 
-#Attributes available in integration testing
+#ATTRIBUTES AVAILABLE IN INTEGRATION TESTING
 [RW]accept:	 The Accept header to send.
 [RW]application:	 Rack application to use
 [R]body:	 The body of the last request.
@@ -47,7 +47,7 @@ xml_http_request
 [R]status:	 The integer HTTP status code of the last request.
 [R]status_message:	 The status message that accompanied the status code of the last request.
 
-#Rspec built-in matchers
+#RSPEC BUILT-IN MATCHERS
 cow.should == twin_cow
 cow.should === twin_cow
 cow.should eql(cow)
@@ -73,7 +73,44 @@ work.should have_exactly(8).hours
 basket.should have_at_least(5).items
 auditorium.should have_at_most(100).people
 number.should be >= 2
-number.should be <= 4
+number.should be <= 4                  
+#TESING XML OR HTML CONTENT WITH HAVE_TAG             
+body.should have_tag("li") #wrapper for Test::Unit assertselect
+body.should have_tag("status", :text => "building")     
+body.should have_tag("li.my_class", :text => "building")     
+response.should have_tag("img[alt=My accessible text]")
+response.should have_tag("img[alt~=readable accessible usable]") # Match any of these words
+response.should have_tag("img[alt^=My]") # Match attribute beginning with "My"
+response.should have_tag("img[alt$=text]") # Match attribute ending with "text"
+response.should have_tag("img[alt*=essibl]") # Match "essibl" anywhere in attribute
+response.should have_tag("img[alt]") # Match any img element with alt attribute
+response.should have_tag("li:nth-child(2)", :text => "I'm element 2")
+response.should have_tag("li:nth-last-child(2)", :text => "I'm element 4")
+response.should have_tag("ul:first-child", :text => "I'm element 1")
+response.should have_tag("ul:last-child", :text => "I'm element 5")
+response.should have_tag("p:nth-of-type(2)", :text => "I'm going to describe the list below")
+response.should have_tag("li:nth-last-of-type(2)", :text => "I'm list 2")
+response.should have_tag("p:first-of-type", :text => "I've got some paragraph text")
+response.should have_tag("p:last-of-type", :text => "I'm going to describe the list below")
+response.should have_tag("li:nth-of-type(3n+1).highlight", :count => 3) #every third <li> element, starting at number 1, will have the highlight class applied and that we return exactly 3 matches
+response.should have_tag("li:nth-of-type(3n+1).highlight", :maximum => 4) #when we don't know exactly how many matches should be returned
+response.should have_tag("li:nth-of-type(3n+1).highlight", :minimum => 1)
+response.should have_tag("li:nth-of-type(3n+1).highlight", 1..4)      
+response.should have_tag "form[action=/sessions]" do #iterating over child elements
+  with_tag "input[type=text][name=username]"
+  with_tag "input[type=password][name=password]"
+end
+  
+#RESPONSE METHODS
+content_length
+success?
+has_flash?
+has_flash_with_contents?
+body
+redirect?
+cookies       
+location
+
 
 
 
