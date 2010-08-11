@@ -7,4 +7,6 @@ Build Worker communicates with purapp server using REST.
 
 $spec spec -f specdoc -c #run rspec specifications from project root
 
+edited from github interface
+
 Please check back shortly for more documentation.
