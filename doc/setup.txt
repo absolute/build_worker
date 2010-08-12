@@ -112,8 +112,9 @@ redirect?
 cookies       
 location
 
-
-
+#RSPEC COMMAND LINE OPTIONS
+spec spec/tasks/ -l 5 #run the example group at line 5 Note: DOES NOT work for dynamically generated examples
+spec spec/tasks/ -d #--dry-run
 
 
 

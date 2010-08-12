@@ -24,13 +24,16 @@ sh %{grep pattern file} do |ok, res|
 		puts "pattern not found (status = #{res.exitstatus})"
 	end
 end     
-my_setting1 = ENV['HOME'] #uses environment variable 'HOME'
 namespace 'build' do #Use Namespaces to Organize Tasks   (rake build:task)
 config = get_config(f) #loads yml file useful for creating dynamic tasks
 rake --rakefile my_task_file my_task #use a specific Rake file of your choice, use either -f, or --rakefile
 rake -g -T #use tasks from the Rake files from your .rake directory, use the -g option
 rake --silent my_task #-quiet option only suppresses normal output. Use --silent to run Rake with absolutely no output at all
+my_setting1 = ENV['HOME'] #uses environment variable 'HOME'
 rake my_task my_var1='Some value' my_var2='Another value' #setting environment variables
-rake --trace my_task #detailed output
+rake --trace my_task #detailed output     
+verbose(true) do   #will echo the commands
+  sh this_verbose_command 
+end
 
        
