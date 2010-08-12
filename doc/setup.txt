@@ -1,3 +1,4 @@
+INSTALLATION STEPS
 sudo gem install cucumber
 sudo gem install cucumber-rails
 sudo gem install rspec
