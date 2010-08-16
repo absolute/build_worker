@@ -4,18 +4,15 @@ namespace "ror" do
 
 desc "build RubyOnRails project"
 task "checkout" do
-  Dir.chdir(%{#{ENV["DRIVE_DIR"]}}) do 
-    res = sh %{git clone #{ENV['PROJECT_URI']} #{ENV['PROJECT_NAME']}}
-  end            
+    Dir.chdir(%{#{ENV["DRIVE_DIR"]}}) do 
+      sh %{git clone #{ENV['PROJECT_URI']} #{ENV['PROJECT_NAME']}}
+    end            
 end
-task "build" do
-    puts "------------------------------------BUILD BEGIN----------"
-    verbose(true) do
-      Dir.chdir(%{#{ENV["DRIVE_DIR"]}/#{ENV['PROJECT_NAME']}}) do 
-        res = sh %{git fetch origin master}
-      end            
-    end
-    puts "------------------------------------BUILD END----------"
+task "update" do
+    Dir.chdir(%{#{ENV['DRIVE_DIR']}/#{ENV['PROJECT_NAME']}}) do 
+        sh %{git pull origin master}
+        sh %{git show --pretty=fuller --name-status > #{ENV['COMMIT_REPORT']}}
+    end            
 end               
 
 end

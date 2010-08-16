@@ -1,52 +1,114 @@
 require "spec_helper"
-require "file_helper"
-                      
-include FileHelper
 
-describe "ror", "#checkout new project" do
-  context "on an empty drive" do     
-    before (:each) do
+describe "ror", "#new project" do  
+  before (:all) do
       @drive_dir = "/Users/muthu/project/ror_unitest"
       @project_uri = "git://github.com/absolute/build_worker.git"
-      @project_name = "build_worker"
-      recreate_dir @drive_dir
+      @project_name = "build_worker"    
+      @build_dir = "/Users/muthu/project/builds"
+  end
+  context "checkout on an empty drive" do     
+    before (:each) do    
+      FileUtils.mkdir_p @drive_dir
     end
     it "should end successfully" do  
-      system(%{rake ror:checkout DRIVE_DIR=#{@drive_dir} PROJECT_NAME=#{@project_name} PROJECT_URI=#{@project_uri}})    
+      system(%{rake ror:checkout DRIVE_DIR=#{@drive_dir} PROJECT_NAME=#{@project_name} PROJECT_URI=#{@project_uri} 2>error.log 1>out.log})    
       $?.success?.should == true
     end
-    it "should checkout from repository" do  
-      Dir["#{@drive_dir}/*"].empty?.should == true
+    it "should checkout from repository" do            
+      Dir.entries("#{@drive_dir}").select {|n| n =~ /^\w/}.should be_empty
       system(%{rake ror:checkout DRIVE_DIR=#{@drive_dir} PROJECT_NAME=#{@project_name} PROJECT_URI=#{@project_uri}})    
-      Dir["#{@drive_dir}/*"].empty?.should == false
-    end   
+      Dir.entries("#{@drive_dir}").select {|n| n =~ /^\w/}.should_not be_empty    
+    end                                                  
+    after (:each) do
+      FileUtils.rm_rf @drive_dir
+    end
   end                                 
-  context "on a NON-empty drive" do
-    it "should fail" do
-      @drive_dir = "/Users/muthu/project/ror_unitest"
-      @project_uri = "git://github.com/absolute/build_worker.git"
-      @project_name = "build_worker"   
-      system(%{rake ror:checkout DRIVE_DIR=#{@drive_dir} PROJECT_NAME=#{@project_name} PROJECT_URI=#{@project_uri}})    
-      $?.success?.should == false
+  context "checkout on a NON-empty drive" do             
+    before (:each) do
+      FileUtils.mkdir_p "#{@drive_dir}/#{@project_name}/tmp"
+    end
+    it "should fail" do                                                             
+      system(%{rake ror:checkout DRIVE_DIR=#{@drive_dir} PROJECT_NAME=#{@project_name} PROJECT_URI=#{@project_uri} 2>error.log 1>out.log})    
+      $?.success?.should == false      
+    end    
+    it "should report 'destination already exists' error" do
+      system(%{rake ror:checkout DRIVE_DIR=#{@drive_dir} PROJECT_NAME=#{@project_name} PROJECT_URI=#{@project_uri} 2>error.log 1>out.log})    
+      File.new("error.log").readlines(nil)[0].should match(/.*destination.*already.*exists.* /)
+    end
+    after (:each) do    
+      FileUtils.rm_rf @drive_dir
     end
   end
 end
   
-describe "ror", "#update existing project" do
-  context "on an empty drive" do
-    it "should fail"
-  end  
-  context "on a NON-empty drive" do
-    context "with correct project" do
-    it "should get latest from repository"
-    it "should return author"
-    it "should return commit message"
-    it "should return changed files list"
-    end
+describe "ror", "#existing project" do
+  before (:all) do
+      @drive_dir = "/Users/muthu/project/ror_unitest"
+      @project_uri = "git://github.com/absolute/build_worker.git"
+      @project_name = "build_worker"    
+      @build_dir = "/Users/muthu/project/builds"
+      @commit_report = "#{@build_dir}/commit.report"
   end
-  context "with an invalid repository" do
-    it "should return error details"
-  end                       
+  context "update on an empty drive" do   
+    before (:each) do
+      FileUtils.mkdir_p @drive_dir
+    end
+    it "should fail" do
+      system(%{rake ror:update DRIVE_DIR=#{@drive_dir} PROJECT_NAME=#{@project_name} 2>error.log 1>out.log})
+      $?.success?.should == false 
+    end                           
+    it "show report 'No such file or directory ' error" do
+      system(%{rake ror:update DRIVE_DIR=#{@drive_dir} PROJECT_NAME=#{@project_name} 2>error.log 1>out.log})
+      File.new("error.log").readlines(nil)[0].should match(/.*No.such.file.or.directory.*/)
+    end  
+    after (:each) do
+      FileUtils.rm_rf @drive_dir
+    end
+  end  
+  context "update on a NON-empty drive" do
+    before (:all) do
+      FileUtils.mkdir_p @drive_dir                      
+      Dir.chdir("#{@drive_dir}") do 
+        system %{git clone #{@project_uri} #{@project_name}}
+        Dir.chdir("#{@project_name}") do
+          system %{git reset --hard 1d83c209d0233667b2ab50cc82c1a2f008999b16}
+        end
+      end
+    end
+    context "with same project in drive" do
+      it "should be successfull" do
+        system(%{rake ror:update DRIVE_DIR=#{@drive_dir} PROJECT_NAME=#{@project_name} COMMIT_REPORT=#{@commit_report} 2>error.log 1>out.log})  
+        $?.success?.should == true
+      end
+      it "should return commit id" do
+        system(%{rake ror:update DRIVE_DIR=#{@drive_dir} PROJECT_NAME=#{@project_name} COMMIT_REPORT=#{@commit_report} 2>error.log 1>out.log})  
+        File.new(@commit_report).readlines(nil)[0].should match(/.*commit\s*/)
+      end
+      it "should return commit by" do
+        system(%{rake ror:update DRIVE_DIR=#{@drive_dir} PROJECT_NAME=#{@project_name} COMMIT_REPORT=#{@commit_report} 2>error.log 1>out.log})  
+        File.new(@commit_report).readlines(nil)[0].should match(/.*Commit:\s*/)
+      end
+      it "should return commit date" do
+        system(%{rake ror:update DRIVE_DIR=#{@drive_dir} PROJECT_NAME=#{@project_name} COMMIT_REPORT=#{@commit_report} 2>error.log 1>out.log})  
+        File.new(@commit_report).readlines(nil)[0].should match(/.*CommitDate:\s*/)
+      end
+      it "should return commit message" do
+        system(%{rake ror:update DRIVE_DIR=#{@drive_dir} PROJECT_NAME=#{@project_name} COMMIT_REPORT=#{@commit_report} 2>error.log 1>out.log})  
+        File.new(@commit_report).readlines(nil)[0].should match(/.*\n\n\s+\w+.+\n\n.*/)
+      end
+      it "should return changed files list" do
+        system(%{rake ror:update DRIVE_DIR=#{@drive_dir} PROJECT_NAME=#{@project_name} COMMIT_REPORT=#{@commit_report} 2>error.log 1>out.log})  
+        File.new(@commit_report).readlines(nil)[0].should match(/.*\n\n(M|A|D)\t.*/)
+      end
+    end
+    context "with an invalid repository" do
+      it "should return error details"
+    end                       
+    after (:all) do
+      FileUtils.rm_rf @drive_dir
+    end
+  end        
 
 end  
 
