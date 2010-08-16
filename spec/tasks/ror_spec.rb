@@ -44,11 +44,11 @@ end
   
 describe "ror", "#existing project" do
   before (:all) do
-      @drive_dir = "/Users/muthu/project/ror_unitest"
+      @drive_dir = "/Users/muthu/project/ror_unitest/"
       @project_uri = "git://github.com/absolute/build_worker.git"
-      @project_name = "build_worker"    
-      @build_dir = "/Users/muthu/project/builds"
-      @commit_report = "#{@build_dir}/commit.report"
+      @project_name = "build_worker/"    
+      @build_dir = "/Users/muthu/project/builds/"
+      @commit_report = "commit.report"
   end
   context "update on an empty drive" do   
     before (:each) do
@@ -78,28 +78,28 @@ describe "ror", "#existing project" do
     end
     context "with same project in drive" do
       it "should be successfull" do
-        system(%{rake ror:update DRIVE_DIR=#{@drive_dir} PROJECT_NAME=#{@project_name} COMMIT_REPORT=#{@commit_report} 2>error.log 1>out.log})  
+        system(%{rake ror:update DRIVE_DIR=#{@drive_dir} PROJECT_NAME=#{@project_name} BUILD_DIR=#{@build_dir} COMMIT_REPORT=#{@commit_report} 2>error.log 1>out.log})  
         $?.success?.should == true
       end
       it "should return commit id" do
-        system(%{rake ror:update DRIVE_DIR=#{@drive_dir} PROJECT_NAME=#{@project_name} COMMIT_REPORT=#{@commit_report} 2>error.log 1>out.log})  
-        File.new(@commit_report).readlines(nil)[0].should match(/.*commit\s*/)
+        system(%{rake ror:update DRIVE_DIR=#{@drive_dir} PROJECT_NAME=#{@project_name} BUILD_DIR=#{@build_dir} COMMIT_REPORT=#{@commit_report} 2>error.log 1>out.log})  
+        File.new(@build_dir+@commit_report).readlines(nil)[0].should match(/.*commit\s*/)
       end
       it "should return commit by" do
-        system(%{rake ror:update DRIVE_DIR=#{@drive_dir} PROJECT_NAME=#{@project_name} COMMIT_REPORT=#{@commit_report} 2>error.log 1>out.log})  
-        File.new(@commit_report).readlines(nil)[0].should match(/.*Commit:\s*/)
+        system(%{rake ror:update DRIVE_DIR=#{@drive_dir} PROJECT_NAME=#{@project_name} BUILD_DIR=#{@build_dir} COMMIT_REPORT=#{@commit_report} 2>error.log 1>out.log})  
+        File.new(@build_dir+@commit_report).readlines(nil)[0].should match(/.*Commit:\s*/)
       end
       it "should return commit date" do
-        system(%{rake ror:update DRIVE_DIR=#{@drive_dir} PROJECT_NAME=#{@project_name} COMMIT_REPORT=#{@commit_report} 2>error.log 1>out.log})  
-        File.new(@commit_report).readlines(nil)[0].should match(/.*CommitDate:\s*/)
+        system(%{rake ror:update DRIVE_DIR=#{@drive_dir} PROJECT_NAME=#{@project_name} BUILD_DIR=#{@build_dir} COMMIT_REPORT=#{@commit_report} 2>error.log 1>out.log})  
+        File.new(@build_dir+@commit_report).readlines(nil)[0].should match(/.*CommitDate:\s*/)
       end
       it "should return commit message" do
-        system(%{rake ror:update DRIVE_DIR=#{@drive_dir} PROJECT_NAME=#{@project_name} COMMIT_REPORT=#{@commit_report} 2>error.log 1>out.log})  
-        File.new(@commit_report).readlines(nil)[0].should match(/.*\n\n\s+\w+.+\n\n.*/)
+        system(%{rake ror:update DRIVE_DIR=#{@drive_dir} PROJECT_NAME=#{@project_name} BUILD_DIR=#{@build_dir} COMMIT_REPORT=#{@commit_report} 2>error.log 1>out.log})  
+        File.new(@build_dir+@commit_report).readlines(nil)[0].should match(/.*\n\n\s+\w+.+\n\n.*/)
       end
       it "should return changed files list" do
-        system(%{rake ror:update DRIVE_DIR=#{@drive_dir} PROJECT_NAME=#{@project_name} COMMIT_REPORT=#{@commit_report} 2>error.log 1>out.log})  
-        File.new(@commit_report).readlines(nil)[0].should match(/.*\n\n(M|A|D)\t.*/)
+        system(%{rake ror:update DRIVE_DIR=#{@drive_dir} PROJECT_NAME=#{@project_name} BUILD_DIR=#{@build_dir} COMMIT_REPORT=#{@commit_report} 2>error.log 1>out.log})  
+        File.new(@build_dir+@commit_report).readlines(nil)[0].should match(/.*\n\n(M|A|D)\t.*/)
       end
     end
     context "with an invalid repository" do

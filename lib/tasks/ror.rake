@@ -8,10 +8,11 @@ task "checkout" do
       sh %{git clone #{ENV['PROJECT_URI']} #{ENV['PROJECT_NAME']}}
     end            
 end
-task "update" do
-    Dir.chdir(%{#{ENV['DRIVE_DIR']}/#{ENV['PROJECT_NAME']}}) do 
+directory "#{ENV['BUILD_DIR']}"
+task "update" => ["#{ENV['BUILD_DIR']}"] do     
+    Dir.chdir(%{#{ENV['DRIVE_DIR']}#{ENV['PROJECT_NAME']}}) do 
         sh %{git pull origin master}
-        sh %{git show --pretty=fuller --name-status > #{ENV['COMMIT_REPORT']}}
+        sh %{git show --pretty=fuller --name-status > #{ENV['BUILD_DIR']}#{ENV['COMMIT_REPORT']}}
     end            
 end               
 
