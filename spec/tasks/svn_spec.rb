@@ -82,23 +82,24 @@ describe "ror", "#existing project" do
       end
       it "should return commit id" do
         system(%{rake svn:update DRIVE_DIR=#{@drive_dir} PROJECT_NAME=#{@project_name} BUILD_DIR=#{@build_dir} COMMIT_REPORT=#{@commit_report} 2>error.log 1>out.log})  
-        File.new(@build_dir+@commit_report).readlines(nil)[0].should match(/[^|]+|[^|]+|[^|]+|[^|]+[^|]+.*/)
+        File.new(@build_dir+@commit_report).readlines(nil)[0].should match(/.*commit_id:\s*/)   
+        
       end
       it "should return commit by" do
         system(%{rake svn:update DRIVE_DIR=#{@drive_dir} PROJECT_NAME=#{@project_name} BUILD_DIR=#{@build_dir} COMMIT_REPORT=#{@commit_report} 2>error.log 1>out.log})  
-        File.new(@build_dir+@commit_report).readlines(nil)[0].should match(/[^|]+|[^|]+|[^|]+|[^|]+[^|]+.*/)
+        File.new(@build_dir+@commit_report).readlines(nil)[0].should match(/.*commit_by:\s*/)   
       end
-      it "should return commit date" do
+      it "should return commit on" do
         system(%{rake svn:update DRIVE_DIR=#{@drive_dir} PROJECT_NAME=#{@project_name} BUILD_DIR=#{@build_dir} COMMIT_REPORT=#{@commit_report} 2>error.log 1>out.log})  
-        File.new(@build_dir+@commit_report).readlines(nil)[0].should match(/[^|]+|[^|]+|[^|]+|[^|]+[^|]+.*/)
+        File.new(@build_dir+@commit_report).readlines(nil)[0].should match(/.*commit_on:\s*/)   
       end
       it "should return commit message" do
         system(%{rake svn:update DRIVE_DIR=#{@drive_dir} PROJECT_NAME=#{@project_name} BUILD_DIR=#{@build_dir} COMMIT_REPORT=#{@commit_report} 2>error.log 1>out.log})  
-        File.new(@build_dir+@commit_report).readlines(nil)[0].should match(/.*Changed paths:.*/)
+        File.new(@build_dir+@commit_report).readlines(nil)[0].should match(/.*commit_message:\s*/)   
       end
-      it "should return changed files list" do
+      it "should return changed files" do
         system(%{rake svn:update DRIVE_DIR=#{@drive_dir} PROJECT_NAME=#{@project_name} BUILD_DIR=#{@build_dir} COMMIT_REPORT=#{@commit_report} 2>error.log 1>out.log})  
-        File.new(@build_dir+@commit_report).readlines(nil)[0].should match(/.*\n\n\w+.*\n-+.*/)
+        File.new(@build_dir+@commit_report).readlines(nil)[0].should match(/.*changed_files:\s*/)   
       end
     end
     context "with an invalid repository" do
