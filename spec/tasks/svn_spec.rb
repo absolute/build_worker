@@ -44,7 +44,7 @@ describe "svn", "#new project" do
   end
 end
   
-describe "ror", "#existing project" do
+describe "svn", "#existing project" do
   before (:all) do
       @drive_dir = "/Users/muthu/project/svn_unittest/"
       @project_uri = "http://indiaserver.no-ip.info/repo/dummy/trunk"
