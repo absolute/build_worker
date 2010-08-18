@@ -3,7 +3,7 @@ require "fileutils"
 namespace "git" do
 
 desc "build RubyOnRails project"
-task "checkout" do
+task "checkout" do                   
     Dir.chdir(%{#{ENV["DRIVE_DIR"]}}) do 
       sh %{git clone #{ENV['PROJECT_URI']} #{ENV['PROJECT_NAME']}}
     end            
