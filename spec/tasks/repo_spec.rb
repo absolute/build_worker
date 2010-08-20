@@ -2,7 +2,7 @@ require "spec_helper"
 
 describe "repo", "#git" do                     
   before :all do
-    @repo_type = "git"
+    @repo_type = "git"     
   end
   context "with new repository" do
     it "should run git checkout command" do

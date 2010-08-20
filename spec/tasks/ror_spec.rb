@@ -1,8 +1,8 @@
+require 'erb'
 require "spec_helper"
 
 describe "ror", "#build" do
   context "with a new project" do     
-    it "should create the environment"
     it "should load the environment"
     it "should checkout the repository"
     it "should setup the database"
@@ -28,7 +28,12 @@ describe "ror", "#environment" do
           YAML.dump(env, out) 
       end
     end
-    it "should load it successfully" do                         
+    it "should load it successfully" do        
+        x = 50
+        template = ERB.new <<-EOF
+          The value of x is: <%= x %>
+        EOF
+        puts template.result(binding)
       system(%{rake ror:environment DRIVE_DIR="#{@drive_dir}" PROJECT_NAME="#{@project_name}" > out.log})    
       $?.success?.should == true
     end   
