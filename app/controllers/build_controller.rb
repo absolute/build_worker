@@ -1,3 +1,5 @@
+require "tasks/system_caller"
+
 class BuildController < ApplicationController
                                           
 # POST /build/config/:project_name.xml
@@ -8,7 +10,7 @@ def config
   FileUtils.mkdir_p project_folder+"/"+@build_id
   EbsManager.attach_volume(@project[:ebs_vol])           
   create_env_file
-  system("rake ror:config ENV_FILE='#{project_folder}environment.yml' BUILD_ID='#{@build_id}'")  
+  SystemCaller.call("rake ror:config ENV_FILE='#{project_folder}environment.yml' BUILD_ID='#{@build_id}'")  
   respond_to do |format|
     format.xml { render :xml => {:build_id => @build_id, :status=>"building"}} 
   end       
@@ -42,7 +44,7 @@ def create
     cmd = "rake ror:build ENV_FILE='#{project_folder}environment.yml' "
     cmd +=  "COMMIT='#{params[:commit]}' " if params[:commit]    
     cmd +=  "BUILD_ID='#{@build_id}'"
-    system(cmd)  
+    SystemCaller.call cmd  
     respond_to do |format|
       format.xml { render :xml => {:build_id => @build_id, :status=>"building"}} 
     end       
