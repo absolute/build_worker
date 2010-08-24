@@ -22,19 +22,19 @@ describe :ror, "#config" do
       Rake.application.rake_require "lib/tasks/ror"
     end
     it "should checkout the repository" do 
-      Rake::Task.define_task("repo:checkout").should_receive(:invoke)  
+      Rake::Task.define_task("git:checkout").should_receive(:invoke)  
       Rake::Task.define_task("ror:database_setup")
       Rake::Task.define_task("ror:run_user_command").should_receive(:invoke).any_number_of_times
       @rake["ror:config"].invoke
     end
     it "should setup the database" do
-      Rake::Task.define_task("repo:checkout")    
+      Rake::Task.define_task("git:checkout")    
       Rake::Task.define_task("ror:database_setup").should_receive(:invoke).with("for_builds/", "#{@project_folder}source/config/")
       Rake::Task.define_task("ror:run_user_command").should_receive(:invoke).any_number_of_times
       @rake["ror:config"].invoke
     end
     it "should run the user command" do
-      Rake::Task.define_task("repo:checkout")    
+      Rake::Task.define_task("git:checkout")    
       Rake::Task.define_task("ror:database_setup")
       Rake::Task.define_task("ror:run_user_command").should_receive(:invoke).with(@project[:command])
       @rake["ror:config"].invoke
@@ -113,19 +113,19 @@ describe :ror, "#create_build" do
   end  
   context "without commit" do
     it "should get latest from repository" do
-      Rake::Task.define_task("repo:update").should_receive(:invoke)  
+      Rake::Task.define_task("git:update").should_receive(:invoke)  
       Rake::Task.define_task("ror:database_setup").should_receive(:invoke).any_number_of_times
       Rake::Task.define_task("ror:run_user_command").should_receive(:invoke).any_number_of_times
       @rake["ror:create_build"].invoke
     end 
     it "should setup database" do
-      Rake::Task.define_task("repo:update").should_receive(:invoke).any_number_of_times
+      Rake::Task.define_task("git:update").should_receive(:invoke).any_number_of_times
       Rake::Task.define_task("ror:database_setup").should_receive(:invoke).with("for_builds/", "#{@project_folder}source/config/")
       Rake::Task.define_task("ror:run_user_command").should_receive(:invoke).any_number_of_times
       @rake["ror:create_build"].invoke
     end
     it "should run user command" do
-        Rake::Task.define_task("repo:update").should_receive(:invoke).any_number_of_times
+        Rake::Task.define_task("git:update").should_receive(:invoke).any_number_of_times
         Rake::Task.define_task("ror:database_setup").should_receive(:invoke).any_number_of_times
         Rake::Task.define_task("ror:run_user_command").should_receive(:invoke).with("#{@project[:command]}")
         @rake["ror:create_build"].invoke

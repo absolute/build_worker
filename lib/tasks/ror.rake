@@ -19,13 +19,13 @@ namespace :ror do
   end    
   
   task :config => [:environment] do
-    Rake::Task["repo:checkout"].invoke
+    Rake::Task["#{ENV['PROJECT_SCM']}:checkout"].invoke
     Rake::Task["ror:database_setup"].invoke("for_builds/" , ENV['PROJECT_FOLDER']+"source/config/")
     Rake::Task["ror:run_user_command"].invoke(ENV['PROJECT_COMMAND'])
   end                                                       
   
   task :create_build => [:environment] do
-    Rake::Task["repo:update"].invoke
+    Rake::Task["#{ENV['PROJECT_SCM']}:update"].invoke
     Rake::Task["ror:database_setup"].invoke("for_builds/" , ENV['PROJECT_FOLDER']+"source/config/")
     Rake::Task["ror:run_user_command"].invoke(ENV['PROJECT_COMMAND'])
   end
