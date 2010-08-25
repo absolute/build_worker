@@ -9,7 +9,7 @@ describe :ror, "#config" do
   context "with valid environment file and build id" do
     before :each do    
       mark_env
-      @project_folder = "/Users/muthu/project/drive/build_worker/"    
+      @project_folder = "drive/build_worker/"    
       @env_file = @project_folder+"environment.yml"                          
       @build_id = "123.12"
       @project = {:id=>1, :name=>"build_worker", :uri=>"uri", :scm=>"git", :branch=>"master", :command=>"rake test", :ebs_vol=>@drive_dir}
@@ -99,7 +99,7 @@ describe :ror, "#create_build" do
   include TasksHelper
   before :each do    
     mark_env
-    @project_folder = "/Users/muthu/project/drive/build_worker/"    
+    @project_folder = "drive/build_worker/"    
     @env_file = @project_folder+"environment.yml"                          
     @build_id = "123.12"
     @project = {:id=>1, :name=>"build_worker", :uri=>"uri", :scm=>"git", :branch=>"master", :command=>"rake test", :ebs_vol=>@drive_dir}
@@ -145,7 +145,7 @@ describe :ror, "#database_setup" do
   include TasksHelper
   before :each do   
     mark_env
-    ENV['PROJECT_FOLDER'] = "/Users/muthu/project/drive/build_worker/"
+    ENV['PROJECT_FOLDER'] = "drive/build_worker/"
     @source = "for_builds/"
     @target = "#{ENV['PROJECT_FOLDER']}source/config/"
     FileUtils.mkdir_p @target
@@ -178,7 +178,7 @@ describe :ror, "#run_user_command" do
   include TasksHelper
   before :each do 
     mark_env
-    ENV['PROJECT_FOLDER'] = "/Users/muthu/project/drive/build_worker/"
+    ENV['PROJECT_FOLDER'] = "drive/build_worker/"
     ENV['BUILD_ID'] = "123.123"
     FileUtils.mkdir_p ENV['PROJECT_FOLDER']+ENV['BUILD_ID']
   end

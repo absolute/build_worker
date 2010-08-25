@@ -6,7 +6,7 @@ namespace "svn" do
 desc "build RubyOnRails project"
 task "checkout" do         
   Dir.chdir(%{#{ENV["PROJECT_FOLDER"]}}) do 
-    sh %{svn checkout #{ENV['PROJECT_URI']} source}
+    sh %{svn checkout #{ENV['PROJECT_URI']} source > #{ENV['BUILD_ID']}/build.log 2>&1}
   end            
 end     
 
@@ -15,8 +15,8 @@ task "update" => ["#{ENV['PROJECT_FOLDER']}#{ENV['BUILD_ID']}"] do
     source_folder = "#{ENV['PROJECT_FOLDER']}source/"  
     build_folder = "#{ENV['PROJECT_FOLDER']}#{ENV['BUILD_ID']}/"  
     Dir.chdir("#{ENV['PROJECT_FOLDER']}source/") do 
-      sh %{svn update}
-      sh %{svn log --limit 1 -v > ../#{ENV['BUILD_ID']}/commit.report}
+      sh %{svn update > ../#{ENV['BUILD_ID']}/build.log 2>&1}
+      sh %{svn log --limit 1 -v  > ../#{ENV['BUILD_ID']}/commit.report 2>../#{ENV['BUILD_ID']}/build.log}
     end                                                        
     commit_details = Hash.new()
     out = File.new(build_folder+"commit.report").readlines(nil)[0]
