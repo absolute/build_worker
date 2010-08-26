@@ -2,9 +2,8 @@ require "fileutils"
 
 namespace "git" do
                                   
-task :set_ssh_key do                     
+task :set_ssh_key do
   ssh_folder = ENV['SSH_FOLDER']
-  # Dir.chdir(%{#{ENV["WORKER_FOLDER"]}}) do 
     sh %{touch #{ssh_folder}config} unless File.exists?("#{ssh_folder}/config")
     sh %{chmod 600 #{ssh_folder}config} unless File.exists?("#{ssh_folder}/config")      
     if File.exists?("#{ssh_folder}config")
@@ -12,7 +11,6 @@ task :set_ssh_key do
     else
       system %{cat for_builds/sshkeys/ssh_config > #{ssh_folder}config} unless File.exists?("#{ssh_folder}config")
     end
-    # sh %{cat for_builds/sshkeys/ssh_config >> #{ssh_folder}config} unless (IO.readlines("for_builds/sshkeys/ssh_config")-IO.readlines("#{ssh_folder}config")).empty?
     sh %{cp for_builds/sshkeys/id_rsa.pureapp #{ssh_folder}} unless File.exists?("#{ssh_folder}/id_rsa.pureapp")
     sh %{cp for_builds/sshkeys/id_rsa.pureapp.pub #{ssh_folder}} unless File.exists?("#{ssh_folder}/id_rsa.pureapp.pub")
   # end                                                     
@@ -21,13 +19,13 @@ end
 directory "#{ENV['PROJECT_FOLDER']}#{ENV['BUILD_ID']}"
 
 desc "build RubyOnRails project"
-task :checkout => ["#{ENV['PROJECT_FOLDER']}#{ENV['BUILD_ID']}"] do                   
+task :checkout => [:set_ssh_key, "#{ENV['PROJECT_FOLDER']}#{ENV['BUILD_ID']}"] do                   
     Dir.chdir(%{#{ENV["PROJECT_FOLDER"]}}) do 
       sh %{git clone #{ENV['PROJECT_URI']} source > #{ENV['BUILD_ID']}/build.log 2>&1}
     end            
 end
 
-task :update => ["#{ENV['PROJECT_FOLDER']}#{ENV['BUILD_ID']}"] do   
+task :update => [:set_ssh_key, "#{ENV['PROJECT_FOLDER']}#{ENV['BUILD_ID']}"] do   
     source_folder = "#{ENV['PROJECT_FOLDER']}source/"  
     build_folder = "#{ENV['PROJECT_FOLDER']}#{ENV['BUILD_ID']}/"  
     Dir.chdir("#{ENV['PROJECT_FOLDER']}source/") do 
