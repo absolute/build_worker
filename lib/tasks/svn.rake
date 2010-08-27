@@ -4,7 +4,7 @@ namespace "svn" do
             
 # All directories should end with /
 desc "build RubyOnRails project"
-task "checkout" do         
+task "checkout" => ["#{ENV['PROJECT_FOLDER']}#{ENV['BUILD_ID']}"] do         
   Dir.chdir(%{#{ENV["PROJECT_FOLDER"]}}) do 
     sh %{svn checkout #{ENV['PROJECT_URI']} source > #{ENV['BUILD_ID']}/build.log 2>&1}
   end            
