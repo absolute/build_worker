@@ -25,11 +25,14 @@ describe "svn" do
         ENV['PROJECT_FOLDER']=@project_folder
         ENV['BUILD_ID']=@build_id
         ENV['PROJECT_URI']=@project_uri
+        @rake = Rake::Application.new
+        Rake.application = @rake
+        Rake.application.rake_require "lib/tasks/svn"
         FileUtils.mkdir_p @project_folder  
       end                      
       it "should end successfully" do  
-        # Rake::Task['svn:checkout'].invoke
-        system(%{rake svn:checkout PROJECT_FOLDER=#{@project_folder} BUILD_ID=#{@build_id} PROJECT_URI=#{@project_uri}})    
+        Rake::Task['svn:checkout'].invoke
+        # system(%{rake svn:checkout PROJECT_FOLDER=#{@project_folder} BUILD_ID=#{@build_id} PROJECT_URI=#{@project_uri}})    
         $?.success?.should == true
       end
       it "should checkout from repository" do            
