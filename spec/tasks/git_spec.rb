@@ -9,7 +9,9 @@ describe "git", "#ssh key" do
     Rake.application.rake_require "lib/tasks/git"
     @cfg = BuildConfig.new({:drive=>"drive", 
       :project_name =>"build_worker", 
-      :build_id     =>"123.123"})
+      :build_id     =>"123.123",
+      :worker_folder => Dir.getwd,
+      :ssh_folder_to => "ssh"})
     FileUtils.mkdir_p @cfg.ssh_folder_to    
   end
   context "not set in config" do  
@@ -70,7 +72,8 @@ describe "git", "#checkout" do
   before (:each) do   
     @cfg = BuildConfig.new({:drive=>"drive", 
       :project_name =>"build_worker", 
-      :build_id     =>"123.123", 
+      :build_id     =>"123.123",     
+      :worker_folder => Dir.getwd,
       :project_uri  =>"git://github.com/absolute/build_worker.git"})
     @rake = Rake::Application.new
     Rake.application = @rake
@@ -120,7 +123,8 @@ describe "git", "#update" do
   before (:all) do    
     @cfg = BuildConfig.new({:drive=>"drive", 
       :project_name =>"build_worker", 
-      :build_id     =>"123.123", 
+      :build_id     =>"123.123",
+      :worker_folder => Dir.getwd,
       :project_uri  =>"git://github.com/absolute/build_worker.git"})
     @rake = Rake::Application.new
     Rake.application = @rake

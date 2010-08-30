@@ -13,7 +13,8 @@ describe "svn" do
       :project_uri  =>"http://indiaserver.no-ip.info/repo/dummy/trunk", 
       :auth_type    =>"password", 
       :username     =>"muthu", 
-      :password     =>"muthu" })
+      :password     =>"muthu",
+      :worker_folder => Dir.getwd})
   end   
   context "#checkout", "with an empty drive" do   
     context "with valid password" do
@@ -38,7 +39,8 @@ describe "svn" do
           :project_uri  =>"http://indiaserver.no-ip.info/repo/dummy/trunk", 
           :auth_type    =>"password", 
           :username     =>"muthu", 
-          :password     =>"wrong" })
+          :password     =>"wrong",
+          :worker_folder => Dir.getwd })
         FileUtils.mkdir_p @cfg.build_folder  
       end                      
       it "should raise exception" do             
