@@ -1,80 +1,81 @@
 require "spec_helper"
 require "rake"
-require "tasks/tasks_helper"
+require "tasks/build_config"
 
 describe "git", "#ssh key" do      
-  before :each do
-    @ssh_folder = "ssh/"
-    FileUtils.mkdir_p @ssh_folder    
+  before :each do  
+    @rake = Rake::Application.new
+    Rake.application = @rake
+    Rake.application.rake_require "lib/tasks/git"
+    @cfg = BuildConfig.new({:drive=>"drive", 
+      :project_name =>"build_worker", 
+      :build_id     =>"123.123"})
+    FileUtils.mkdir_p @cfg.ssh_folder_to    
   end
   context "not set in config" do  
     before :each do
-      File.open(@ssh_folder+"config", "w") do |f|
+      File.open(@cfg.ssh_config_to, "w") do |f|
         f.write("already existing config")
       end
     end
     it "should copy the public key" do
-      File.exists?(@ssh_folder+"id_rsa.pureapp.pub").should == false
-      system(%{rake git:set_ssh_key SSH_FOLDER="#{@ssh_folder}"})
-      File.exists?(@ssh_folder+"id_rsa.pureapp.pub").should == true
+      File.exists?(@cfg.ssh_public_key_to).should == false  
+      Rake::Task['git:set_ssh_key'].invoke(@cfg)
+      File.exists?(@cfg.ssh_public_key_to).should == true
     end
     it "should copy the private key" do
-      File.exists?(@ssh_folder+"id_rsa.pureapp").should == false
-      system(%{rake git:set_ssh_key SSH_FOLDER="#{@ssh_folder}"})
-      File.exists?(@ssh_folder+"id_rsa.pureapp").should == true
+      File.exists?(@cfg.ssh_private_key_to).should == false
+      Rake::Task['git:set_ssh_key'].invoke(@cfg)
+      File.exists?(@cfg.ssh_private_key_to).should == true
     end
     it "should update ssh config file" do
-      IO.read("#{@ssh_folder}config").should_not match(/IdentityFile ~\/\.ssh\/id_rsa\.pureapp/)
-       system(%{rake git:set_ssh_key SSH_FOLDER="#{@ssh_folder}"})
-       IO.read("#{@ssh_folder}config").should match(/IdentityFile ~\/\.ssh\/id_rsa\.pureapp/)
+      IO.read(@cfg.ssh_config_to).should_not match(/IdentityFile ~\/\.ssh\/id_rsa\.pureapp/)
+      Rake::Task['git:set_ssh_key'].invoke(@cfg)
+       IO.read(@cfg.ssh_config_to).should match(/IdentityFile ~\/\.ssh\/id_rsa\.pureapp/)
     end
   end
   context "already set in config" do
     it "should NOT update ssh config file" do
-      File.open(@ssh_folder+"config", "w") do |f|
+      File.open(@cfg.ssh_config_to, "w") do |f|
          f.write("IdentityFile ~/.ssh/id_rsa.pureapp\n")
        end
-       before_line_count = IO.readlines("#{@ssh_folder}config").size
-       system(%{rake git:set_ssh_key SSH_FOLDER="#{@ssh_folder}"})   
-       IO.readlines("#{@ssh_folder}config").size.should == before_line_count
+       before_line_count = IO.readlines(@cfg.ssh_config_to).size
+       Rake::Task['git:set_ssh_key'].invoke(@cfg)
+       IO.readlines(@cfg.ssh_config_to).size.should == before_line_count
      end
   end                                        
    context "with config file missing" do
     it "should copy the public key" do
-      File.exists?(@ssh_folder+"id_rsa.pureapp.pub").should == false
-      system(%{rake git:set_ssh_key SSH_FOLDER="#{@ssh_folder}"})
-      File.exists?(@ssh_folder+"id_rsa.pureapp.pub").should == true
+      File.exists?(@cfg.ssh_public_key_to).should == false
+      Rake::Task['git:set_ssh_key'].invoke(@cfg)
+      File.exists?(@cfg.ssh_public_key_to).should == true
     end
     it "should copy the private key" do
-      File.exists?(@ssh_folder+"id_rsa.pureapp").should == false
-      system(%{rake git:set_ssh_key SSH_FOLDER="#{@ssh_folder}"})
-      File.exists?(@ssh_folder+"id_rsa.pureapp").should == true
+      File.exists?(@cfg.ssh_private_key_to).should == false
+      Rake::Task['git:set_ssh_key'].invoke(@cfg)
+      File.exists?(@cfg.ssh_private_key_to).should == true
     end
     it "should create ssh config file" do
-      File.exists?(@ssh_folder+"config").should == false
-      system(%{rake git:set_ssh_key SSH_FOLDER="#{@ssh_folder}"})
-      IO.read("#{@ssh_folder}config").should match(/IdentityFile ~\/\.ssh\/id_rsa\.pureapp/)
+      File.exists?(@cfg.ssh_config_to).should == false
+      Rake::Task['git:set_ssh_key'].invoke(@cfg)
+      IO.read(@cfg.ssh_config_to).should match(/IdentityFile ~\/\.ssh\/id_rsa\.pureapp/)
     end
   end
   after :each do
-    FileUtils.rm_rf @ssh_folder
+    FileUtils.rm_rf @cfg.ssh_folder_to
   end
 end
 
 describe "git", "#checkout" do  
-  include TasksHelper
   before (:each) do   
-      mark_env
-      @project_folder = "drive/build_worker/"
-      @build_id = "123.123"
-      @project_uri = "git://github.com/absolute/build_worker.git"  
-      @rake = Rake::Application.new
-      Rake.application = @rake
-      Rake.application.rake_require "lib/tasks/git"
-      ENV['PROJECT_FOLDER']=@project_folder 
-      ENV['BUILD_ID']=@build_id 
-      ENV['PROJECT_URI']=@project_uri
-      FileUtils.mkdir_p @project_folder+@build_id
+    @cfg = BuildConfig.new({:drive=>"drive", 
+      :project_name =>"build_worker", 
+      :build_id     =>"123.123", 
+      :project_uri  =>"git://github.com/absolute/build_worker.git"})
+    @rake = Rake::Application.new
+    Rake.application = @rake
+    Rake.application.rake_require "lib/tasks/git"
+    FileUtils.mkdir_p @cfg.build_folder
   end                 
   context "with an empty drive" do     
     it "should have prerequisites for set ssh key" do                     
@@ -82,51 +83,49 @@ describe "git", "#checkout" do
     end
     it "should end successfully" do    
       Rake::Task["git:checkout"].clear_prerequisites
-      Rake::Task['git:checkout'].invoke
+      Rake::Task['git:checkout'].invoke(@cfg)
       $?.success?.should == true
     end
     it "should checkout from repository" do     
       Rake::Task["git:checkout"].clear_prerequisites
-      File.exists?("#{@project_folder}source").should == false    
-      Rake::Task['git:checkout'].invoke
-      Dir.entries("#{@project_folder}source").select {|n| n =~ /^\w/}.should_not be_empty    
+      File.exists?(@cfg.source_folder).should == false    
+      Rake::Task['git:checkout'].invoke(@cfg)
+      Dir.entries(@cfg.source_folder).select {|n| n =~ /^\w/}.should_not be_empty    
     end                                                  
   end                                 
   context "with a NON-empty drive" do             
     before (:each) do
-      FileUtils.mkdir_p "#{@project_folder}/source/tmp"
+      FileUtils.mkdir_p "#{@cfg.source_folder}/tmp"
       Rake::Task["git:checkout"].clear_prerequisites
     end
     it "should raise exception" do                                                             
       lambda {
-        Rake::Task['git:checkout'].invoke
+        Rake::Task['git:checkout'].invoke(@cfg)
       }.should raise_error(Exception)
     end    
     it "should report 'destination already exists' error" do
       begin 
-        Rake::Task['git:checkout'].invoke
+        Rake::Task['git:checkout'].invoke(@cfg)
       rescue
       end
-      IO.read(@project_folder+@build_id+"/build.log").should match(/.*destination.*already.*exists.* /)
+      IO.read(@cfg.build_log).should match(/.*destination.*already.*exists.* /)
     end
   end  
   after (:each) do
-    FileUtils.rm_rf @project_folder   
+    FileUtils.rm_rf @cfg.project_folder   
   end
 end
   
 describe "git", "#update" do
-  before (:all) do
-    @project_folder = "drive/build_worker/"
-    @build_id = "123.123"
-    @project_uri = "git://github.com/absolute/build_worker.git"  
+  before (:all) do    
+    @cfg = BuildConfig.new({:drive=>"drive", 
+      :project_name =>"build_worker", 
+      :build_id     =>"123.123", 
+      :project_uri  =>"git://github.com/absolute/build_worker.git"})
     @rake = Rake::Application.new
     Rake.application = @rake
     Rake.application.rake_require "lib/tasks/git"
-    ENV['PROJECT_FOLDER']=@project_folder 
-    ENV['BUILD_ID']=@build_id 
-    ENV['PROJECT_URI']=@project_uri
-    FileUtils.mkdir_p @project_folder+@build_id
+    FileUtils.mkdir_p @cfg.build_folder
   end
   context "with an empty drive" do   
     it "should have prerequisites for set ssh key" do                     
@@ -135,44 +134,44 @@ describe "git", "#update" do
     it "should raise 'No such file or directory' exception" do
       Rake::Task["git:update"].clear_prerequisites 
       lambda {
-        Rake::Task['git:update'].invoke
+        Rake::Task['git:update'].invoke(@cfg)
       }.should raise_error(Exception, /.*No.such.file.or.directory.*/)
     end                           
   end  
   context "with a NON-empty drive" do
     before (:all) do
-      Dir.chdir("#{@project_folder}") do 
-        system %{git clone #{@project_uri} source}
-        Dir.chdir("source") do
+      Dir.chdir(@cfg.project_folder) do 
+        system %{git clone #{@cfg.project_uri} #{@cfg.source_folder}}
+        Dir.chdir(@cfg.source_folder) do
           system %{git reset --hard 1d83c209d0233667b2ab50cc82c1a2f008999b16}
         end
       end   
       Rake::Task["git:update"].clear_prerequisites 
-      @commit_report =  @project_folder+@build_id+"/commit.report"
     end
     context "with same project in drive" do
       it "should be successfull" do
-        Rake::Task['git:update'].invoke
+        Rake::Task['git:update'].invoke(@cfg)
+        $?.should be_success
       end
       it "should return commit id" do
-        Rake::Task['git:update'].invoke
-        File.new(@commit_report).readlines(nil)[0].should match(/.*commit_id:\s*/)   
+        Rake::Task['git:update'].invoke(@cfg)
+        File.new(@cfg.commit_report).readlines(nil)[0].should match(/.*commit_id:\s*/)   
       end
       it "should return commit by" do
-        Rake::Task['git:update'].invoke
-        File.new(@commit_report).readlines(nil)[0].should match(/.*commit_by:\s*/)
+        Rake::Task['git:update'].invoke(@cfg)
+        File.new(@cfg.commit_report).readlines(nil)[0].should match(/.*commit_by:\s*/)
       end
       it "should return commit on" do
-        Rake::Task['git:update'].invoke
-        File.new(@commit_report).readlines(nil)[0].should match(/.*commit_on:\s*/)
+        Rake::Task['git:update'].invoke(@cfg)
+        File.new(@cfg.commit_report).readlines(nil)[0].should match(/.*commit_on:\s*/)
       end
       it "should return commit message" do
-        Rake::Task['git:update'].invoke
-        File.new(@commit_report).readlines(nil)[0].should match(/.*commit_message:.*/)
+        Rake::Task['git:update'].invoke(@cfg)
+        File.new(@cfg.commit_report).readlines(nil)[0].should match(/.*commit_message:.*/)
       end
       it "should return changed files" do
-        Rake::Task['git:update'].invoke
-        File.new(@commit_report).readlines(nil)[0].should match(/.*changed_files:.*/)
+        Rake::Task['git:update'].invoke(@cfg)
+        File.new(@cfg.commit_report).readlines(nil)[0].should match(/.*changed_files:.*/)
       end
     end
     context "with an invalid repository" do
@@ -180,7 +179,7 @@ describe "git", "#update" do
     end                       
   end        
   after (:all) do
-    FileUtils.rm_rf @project_folder
+    FileUtils.rm_rf @cfg.project_folder
   end
 
 end  
