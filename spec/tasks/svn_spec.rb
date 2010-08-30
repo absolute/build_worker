@@ -1,24 +1,55 @@
 require "spec_helper"
+require "rake"
 
 describe "svn" do  
   before (:all) do
     @project_folder = "drive/dummy/"
     @build_id = "123.123"
     @project_uri = "http://indiaserver.no-ip.info/repo/dummy/trunk"
-  end               
+  end   
+  context "#auth", "with a valid password" do
+    it "should authenticate successfully"
+  end            
+  context "#auth", "with invalid password" do
+    it "should fail with proper error"
+  end
+  context "#auth", "with wrong auth type" do
+    it "should fail with proper error"
+  end
   context "#checkout", "with an empty drive" do   
-    before (:each) do
-      FileUtils.mkdir_p @project_folder  
+    context "with valid password" do
+      before (:each) do              
+        ENV['AUTH_TYPE']="password"
+        ENV['USERNAME']="muthu"
+        ENV['PASSWORD']="muthu"        
+        ENV['PROJECT_FOLDER']=@project_folder
+        ENV['BUILD_ID']=@build_id
+        ENV['PROJECT_URI']=@project_uri
+        FileUtils.mkdir_p @project_folder  
+      end                      
+      it "should end successfully" do  
+        # Rake::Task['svn:checkout'].invoke
+        system(%{rake svn:checkout PROJECT_FOLDER=#{@project_folder} BUILD_ID=#{@build_id} PROJECT_URI=#{@project_uri}})    
+        $?.success?.should == true
+      end
+      it "should checkout from repository" do            
+        File.exists?("#{@project_folder}source").should == false    
+        system(%{rake svn:checkout PROJECT_FOLDER=#{@project_folder} BUILD_ID=#{@build_id} PROJECT_URI=#{@project_uri}})    
+        Dir.entries("#{@project_folder}source").select {|n| n =~ /^\w/}.should_not be_empty    
+      end                             
+    end                     
+    context "with INVALID password" do
+      before (:each) do              
+        ENV['AUTH_TYPE']="password"
+        ENV['USERNAME']="muthu"
+        ENV['PASSWORD']="muthu2"
+        FileUtils.mkdir_p @project_folder  
+      end                      
+      it "should fail" do  
+        system(%{rake svn:checkout PROJECT_FOLDER = #{@project_folder} BUILD_ID=#{@build_id} PROJECT_URI=#{@project_uri}})    
+        $?.success?.should == false
+      end
     end
-    it "should end successfully" do  
-      system(%{rake svn:checkout PROJECT_FOLDER=#{@project_folder} BUILD_ID=#{@build_id} PROJECT_URI=#{@project_uri}})    
-      $?.success?.should == true
-    end
-    it "should checkout from repository" do            
-      File.exists?("#{@project_folder}source").should == false    
-      system(%{rake svn:checkout PROJECT_FOLDER=#{@project_folder} BUILD_ID=#{@build_id} PROJECT_URI=#{@project_uri}})    
-      Dir.entries("#{@project_folder}source").select {|n| n =~ /^\w/}.should_not be_empty    
-    end                                                  
   end                                 
   context "#checkout", "with a NON-empty drive" do             
     before (:each) do
@@ -47,6 +78,9 @@ describe "svn" do
   end  
   context "#update", "with same project in drive" do
     before (:each) do    
+      ENV['AUTH_TYPE']="password"
+      ENV['USERNAME']="muthu"
+      ENV['PASSWORD']="muthu"        
       FileUtils.mkdir_p @project_folder
       Dir.chdir("#{@project_folder}") do 
         system %{svn checkout #{@project_uri} source}
